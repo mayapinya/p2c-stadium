@@ -1,3 +1,4 @@
+import Footer from '../../layout/Footer/Footer';
 import Header from '../../layout/header/Header';
 
 import SliderCard from './SliderCard';
@@ -9,6 +10,7 @@ function HomeContainer() {
       <div className="container-home">
         <SliderCard />
       </div>
+      <Footer />
     </>
   );
 }

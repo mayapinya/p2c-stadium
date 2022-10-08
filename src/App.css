@@ -1,11 +1,18 @@
+.color-main {
+  color: #FF0000;
+}
+
 .app {
   /* background-color: #3A3845; */
-  height: 100vh;
+  /* position: absolute;
+  top     : 0;
+  bottom  : 0;
+  right   : 0;
+  left    : 0; */
 }
 
 .main {
-  position   : relative;
-  /* top     : 59px; */
+  position: relative;
 }
 
 /* Navbar */
@@ -17,7 +24,9 @@
 }
 
 .bg-nav {
-  background-color: #ffffff;
+  background-color   : #ffffff;
+  /* opacity         : 0.3; */
+  box-shadow         : 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .nav-menu {
@@ -33,6 +42,16 @@
   flex-grow: 0;
 }
 
+/* Footer */
+
+.bg-footer {
+  background-color: #F3F3F3;
+}
+
+.icon-footer {
+  height: 40px;
+  width : 40px;
+}
 
 /* Button */
 .bt-main-outline {
@@ -46,10 +65,22 @@
   border-radius   : 30px;
 }
 
+.bt-rounded {
+  border-radius: 30px;
+}
 
 /* Home */
 .container-home {
-  height: 100vh;
+  min-height: 91.6vh;
+  margin-top: 60px;
+}
+
+.container-home .bt-main {
+  margin-left: 1.5rem;
+}
+
+.carousel {
+  height: 100%;
 }
 
 .content-head {
@@ -62,7 +93,7 @@
 }
 
 .button-box button {
-  width     : 180px;
+  width     : 175px;
   font-size : 1.2rem;
   padding   : 10px;
   margin-top: 10px;
@@ -137,8 +168,24 @@
   max-width: 747px;
 }
 
+.about-main {
+  min-height         : 91.6vh;
+  margin-top         : 60px;
+  background-position: center;
+  background-repeat  : no-repeat;
+  background-size    : cover;
+  background-image   : url('./assets/bg-home.png');
+  height             : 91.6vh;
+}
+
 
 /* Register and login */
+.login-main,
+.register-main {
+  min-height: 91.6vh;
+  margin-top: 60px;
+}
+
 .box-register {
   max-width     : 635px;
   padding-top   : 10%;
@@ -153,6 +200,7 @@
   border-radius : 30px;
   padding-top   : 37px;
   padding-bottom: 37px;
+  box-shadow    : 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .panel-content {
@@ -165,6 +213,72 @@
   padding   : 10px 25px;
 }
 
+/* all stadium */
+.all-stadium-main {
+  min-height      : 91.6vh;
+  margin-top      : 60px;
+  background-color: #ffffff;
+}
+
+.all-stadium-main .card {
+  background   : #FFFFFF;
+  border       : 1px solid #D9D9D9;
+  box-shadow   : 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+}
+
+.all-stadium-main .card-img-top {
+  border-top-left-radius : 20px;
+  border-top-right-radius: 20px;
+}
+
+/* booking  */
+.booking-main {
+  background-color: #ffffff;
+}
+
+.header-img {
+  height: 500px;
+}
+
+.header-img img {
+  width          : 100%;
+  height         : 100%;
+  object-fit     : cover;
+  object-position: 50% 50%;
+}
+
+.title-booking {
+  border-bottom : 2px solid #F00000;
+  padding-bottom: 25px;
+}
+
+.button-red {
+  border       : 2px solid #F00000;
+  border-radius: 10px;
+  padding      : 10px 30px;
+  margin-right : 20px;
+  width        : 120px;
+}
+
+.button-red span {
+  margin-left: 5px;
+}
+
+.box-booking {
+  max-width     : 770px;
+  padding-top   : 10%;
+  padding-bottom: 10%;
+}
+
+.back-button {
+  position     : absolute;
+  left         : 7%;
+  top          : 11%;
+  border-radius: 30px;
+}
+
+/* tablet */
 @media only screen and (max-width: 992px) {
   .nav-menu {
     margin-left: unset;
@@ -178,8 +292,26 @@
     margin-left : unset;
     margin-right: unset;
   }
+
+  .content-dec {
+    text-align: center;
+    font-size : clamp(1.2rem, 2.5vw, 2rem);
+  }
+
+  .container-home .button-box>button {
+    font-size: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .container-home .content-box {
+    text-align: center;
+  }
+
+  .container-home .bt-main {
+    margin-left: 1rem;
+  }
 }
 
+/* mobile */
 @media only screen and (max-width: 425px) {
   .nav-menu {
     margin-left: unset;
@@ -197,5 +329,9 @@
   .panel-content {
     padding-left : 10px;
     padding-right: 10px;
+  }
+
+  .container-home .bt-main {
+    margin-left: auto;
   }
 }

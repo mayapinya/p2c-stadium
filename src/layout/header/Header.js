@@ -46,14 +46,14 @@ function Header({ children }) {
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href={'/'}>
+                  <a className="dropdown-item" href={'/contact'}>
                     ติดต่อเรา
                   </a>
                 </li>
               </ul>
             </li>
             <li className="nav-item nav-menu">
-              <a className="nav-link" href={'/booking-all'}>
+              <a className="nav-link" href={'/all-stadium'}>
                 จองสนาม
               </a>
             </li>

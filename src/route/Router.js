@@ -1,5 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+import HistoryBookingContainer from '../features/booking/HistoryBookingContainer';
 import AboutPage from '../pages/AboutPage';
+import AllStadiumPage from '../pages/AllStadiumPage';
+import BookingDetailPage from '../pages/BookingDetailPage';
+import BookingPage from '../pages/BookingPage';
+import HistoryBookingPage from '../pages/HistoryBooking';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
@@ -12,10 +17,10 @@ function Router() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      {/* <Route path="/booking-all" element={<BookingAllPage />} /> */}
-      {/* <Route path="/booking/:stadium" element={<BookingPage />}/> */}
-      {/* <Route path="/booking-history" element={<BookingHistoryPage />}/> */}
-      {/* <Route path="/booking-detail/:id" element={<BookingHistoryPage />}/> */}
+      <Route path="/all-stadium" element={<AllStadiumPage />} />
+      <Route path="/booking/:stadium" element={<BookingPage />} />
+      <Route path="/booking-history" element={<HistoryBookingPage />} />
+      <Route path="/booking-detail/:id" element={<BookingDetailPage />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

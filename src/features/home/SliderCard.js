@@ -9,7 +9,7 @@ function SliderCard() {
     <div
       id="carouselExampleIndicators"
       className="carousel slide carousel-fade bg-h"
-      data-bs-ride="carousel"
+      // data-bs-ride="carousel"
     >
       <div className="carousel-indicators">
         <button
