@@ -5,7 +5,7 @@ import FacebookSVG from '../../assets/facebook.svg';
 function Footer(children) {
   return (
     <>
-      <footer className="bg-footer text-center text-lg-start">
+      <footer id="footer" className="bg-footer text-center text-lg-start">
         <div className="container p-4">
           <div className="row">
             <div className="col-lg-7 col-md-12 mb-4 mb-md-0">

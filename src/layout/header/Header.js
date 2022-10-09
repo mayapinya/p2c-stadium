@@ -6,6 +6,12 @@ import { useAuth } from '../../contexts/AuthContext';
 
 function Header({ children }) {
   const { user, logout } = useAuth();
+
+  const onContact = () => {
+    const divElement = document.getElementById('footer');
+    divElement.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-nav fixed-top">
       <div className="container-fluid">
@@ -51,9 +57,9 @@ function Header({ children }) {
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to={'/contact'}>
+                  <div className="dropdown-item" onClick={onContact}>
                     ติดต่อเรา
-                  </Link>
+                  </div>
                 </li>
               </ul>
             </li>
