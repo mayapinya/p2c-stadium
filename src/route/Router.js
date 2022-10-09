@@ -1,5 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+
 import HistoryBookingContainer from '../features/booking/HistoryBookingContainer';
+import AuthLayout from '../layout/auth/AuthLayout';
 import AboutPage from '../pages/AboutPage';
 import AllStadiumPage from '../pages/AllStadiumPage';
 import BookingDetailPage from '../pages/BookingDetailPage';
@@ -10,18 +13,28 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 
 function Router() {
-  // const { user } = useAuth();
+  const { user } = useAuth();
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/all-stadium" element={<AllStadiumPage />} />
-      <Route path="/booking/:stadium" element={<BookingPage />} />
-      <Route path="/booking-history" element={<HistoryBookingPage />} />
-      <Route path="/booking-detail/:id" element={<BookingDetailPage />} />
-      <Route path="*" element={<Navigate to="/" />} />
+      {user ? (
+        <Route path="/" element={<AuthLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/all-stadium" element={<AllStadiumPage />} />
+          <Route path="/booking/:id" element={<BookingPage />} />
+          <Route path="/booking-history" element={<HistoryBookingPage />} />
+          <Route path="/booking-detail/:id" element={<BookingDetailPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Route>
+      ) : (
+        <>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </>
+      )}
     </Routes>
   );
 }

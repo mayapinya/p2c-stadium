@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import logoAA from '../../assets/logo-text.png';
 
 function CardContent({ top = '27%', right = '11%', left = '11%' }) {
@@ -16,9 +17,10 @@ function CardContent({ top = '27%', right = '11%', left = '11%' }) {
           >
             ติดต่อสอบถาม
           </button>
-          <button type="button" className="btn btn-danger bt-main">
-            จองสนาม
-          </button>
+
+          <Link to={'/all-stadium'}>
+            <button className="btn btn-danger bt-main">จองสนาม</button>
+          </Link>
         </div>
       </div>
     </div>

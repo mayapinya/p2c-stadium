@@ -1,4 +1,4 @@
-import BookingContainer from '../features/booking/BookingContainer';
+import BookingContainer from '../features/booking/select-booking/BookingContainer';
 import Container from '../layout/container/Container';
 
 function BookingPage() {

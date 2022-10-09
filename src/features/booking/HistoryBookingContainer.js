@@ -1,6 +1,5 @@
 import Header from '../../layout/header/Header';
 import Footer from '../../layout/Footer/Footer';
-import CardStadium from './CardStadium';
 
 const HistoryBookingContainer = () => {
   const mockDataItem = [...Array(3)].map((item, i) => {

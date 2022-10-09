@@ -1,4 +1,4 @@
-import AllStadiumContainer from '../features/booking/AllStadiumContainer';
+import AllStadiumContainer from '../features/booking/select-stadium/AllStadiumContainer';
 import Container from '../layout/container/Container';
 
 function AllStadiumPage() {

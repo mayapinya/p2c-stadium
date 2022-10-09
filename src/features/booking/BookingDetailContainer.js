@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import Header from '../../layout/header/Header';
-import UserSvg from '../../assets/user.svg';
 import Footer from '../../layout/Footer/Footer';
 
 function BookingDetailContainer() {

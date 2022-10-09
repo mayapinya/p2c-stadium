@@ -1,24 +1,31 @@
-import Header from '../../layout/header/Header';
-import Footer from '../../layout/Footer/Footer';
+import React, { useState, forwardRef, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
-import s1 from '../../assets/slider/2.jpg';
+import Header from '../../../layout/header/Header';
+import Footer from '../../../layout/Footer/Footer';
 
-import React, { useState, forwardRef, useEffect } from 'react';
+import s1 from '../../../assets/slider/2.jpg';
+import * as stadiumService from '../../../api/stadiumApi';
+import * as bookingService from '../../../api/bookingApi';
+
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 const CustomInput = forwardRef((props, ref) => {
+  const { onClick, value } = props;
   return (
     <div className="input-group">
       <input
-        onClick={props.onClick}
+        onClick={onClick}
         type="text"
         className="form-control border-end-0"
         placeholder="วันที่"
         aria-label="วันที่"
         aria-describedby="วันที่"
-        defaultValue={props.value}
+        value={value ?? ''}
+        readOnly={true}
       />
       <span className="input-group-text bg-transparent" onClick={props.onClick}>
         <i className="fa-solid fa-calendar-days color-main"></i>
@@ -29,21 +36,30 @@ const CustomInput = forwardRef((props, ref) => {
 
 const SlotTimeItems = ({ timeSlot }) => {
   const { id, start, end, price, is_booking } = timeSlot;
+  const timeStart = new Date(start);
+  const timeEnd = new Date(end);
+  const startHour = `${timeStart.getUTCHours()}.00`;
+  const endHour = `${timeEnd.getUTCHours()}.00`;
   return (
-    <label htmlFor={id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-      <div className="px-3 py-2 border border-primary border-2 rounded mt-4 mb-2 mx-3">
+    <label htmlFor={id} className="col-12 col-sm-6 col-md-4 col-lg-3  ">
+      <div
+        className={`px-3 py-2 border ${
+          is_booking ? 'border-dark opacity-25' : 'border-primary'
+        } border-2 rounded mt-4 mb-2 mx-3`}
+      >
         <div className="d-flex flex-row align-items-center justify-content-between">
           <input
             id={id}
             className="form-check-input me-1"
             type="checkbox"
             aria-label="time"
+            disabled={is_booking}
           />
 
           <div className="d-flex flex-column align-items-center justify-content-start">
             <div className="d-flex flex-row align-items-center">
               {/* <p className="h6 mb-0">{`${start}-${end}`}</p> */}
-              <span className="h6 mx-1 mt-2">{`${start}-${end}`}</span>
+              <span className="h6 mx-1 mt-2">{`${startHour}-${endHour}`}</span>
             </div>
             <div className="d-flex flex-row align-items-center">
               <sup className="dollar font-weight-bold text-muted">฿</sup>
@@ -57,7 +73,7 @@ const SlotTimeItems = ({ timeSlot }) => {
   );
 };
 
-const BookingTableList = () => {
+const BookingTableList = ({}) => {
   return (
     <div className="container">
       <div className="row d-flex justify-content-center">
@@ -112,7 +128,8 @@ const BookingTableList = () => {
   );
 };
 
-const BookingHead = ({ facilityData }) => {
+const BookingHead = ({ stadiumData }) => {
+  const { stadiumName, facility } = stadiumData;
   return (
     <>
       <div className="header-img">
@@ -120,7 +137,7 @@ const BookingHead = ({ facilityData }) => {
       </div>
       <div className="row">
         <div className="mt-5">
-          <h2 className="text-uppercase mb-3 title-booking">สนาม1</h2>
+          <h2 className="text-uppercase mb-3 title-booking">{stadiumName}</h2>
         </div>
       </div>
       <div className="row">
@@ -129,11 +146,11 @@ const BookingHead = ({ facilityData }) => {
         </div>
       </div>
       <div className="row ps-4">
-        {facilityData.map((i, keys) => {
+        {facility?.split(',').map((item, keys) => {
           return (
             <div className="button-red mb-3" key={keys}>
-              <i className="fa-solid fa-tv color-main"></i>
-              <span>ทีวี</span>
+              {/* <i className="fa-solid fa-tv color-main"></i> */}
+              <span>{item}</span>
             </div>
           );
         })}
@@ -143,32 +160,61 @@ const BookingHead = ({ facilityData }) => {
 };
 
 const BookingSelectForm = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [timeSlot, setTimeSlot] = useState([]);
+  const today = new Date().toISOString().substr(0, 19).split('T')[0];
+  const dateStr = `${today}T00:00:00.000Z`;
+  const [startDate, setStartDate] = useState(new Date(Date.parse(dateStr)));
+
+  const [bookingSlots, setBookingSlots] = useState([]);
+  const { user } = useAuth();
+  const { id } = useParams();
+
+  const [input, setInput] = useState({
+    stadiumId: id,
+    dayBooking: new Date().toISOString()
+  });
+
+  const onDateSelectChange = (date) => {
+    const dateSelected = new Date(date)
+      .toISOString()
+      .substr(0, 19)
+      .split('T')[0];
+    const dateStr = `${dateSelected}T00:00:00.000Z`;
+    const currentDate = new Date(dateStr);
+
+    setStartDate(currentDate);
+    setInput({
+      ...input,
+      dayBooking: currentDate
+    });
+    getBookingSlots();
+  };
+
+  const getBookingSlots = async () => {
+    try {
+      console.log('input', input);
+      const res = await bookingService.getBookingSlot(input);
+      setBookingSlots(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const inputMemo = useMemo(
+    () => ({
+      stadiumId: input.id,
+      dayBooking: input.dayBooking
+    }),
+    [input.id, input.dayBooking]
+  );
 
   useEffect(() => {
-    const genTime = () => {
-      var today = new Date();
-      today.setHours(today.getHours() + 16);
-      let openEndTime = [];
-      for (let i = 0; i < 16; i++) {
-        let start = 8 + i;
-        openEndTime.push({
-          id: i,
-          start: start.toFixed(2),
-          end: (start + 1).toFixed(2),
-          price: 900,
-          is_booking: false
-        });
-      }
-      setTimeSlot(openEndTime);
-      console.log('timeSlot', timeSlot);
+    const fetchBookingSlots = async () => {
+      await getBookingSlots();
     };
-    genTime();
-    // return () => {
-    //   genTime();
-    // };
-  }, []);
+
+    fetchBookingSlots();
+  }, [inputMemo]);
+
   return (
     <>
       <section>
@@ -188,7 +234,8 @@ const BookingSelectForm = () => {
                           dateFormat="dd/MM/yyyy"
                           customInput={<CustomInput />}
                           selected={startDate}
-                          onChange={(date) => setStartDate(date)}
+                          // value={startDate}
+                          onChange={onDateSelectChange}
                         />
                       </div>
                       <div className="mb-3 col-12 col-sm-4 d-flex justify-content-center align-items-end ">
@@ -202,7 +249,7 @@ const BookingSelectForm = () => {
                     </form>
                   </div>
                   <div className="d-flex align-content-start flex-wrap">
-                    {timeSlot.map((item, keys) => {
+                    {bookingSlots.slots?.map((item, keys) => {
                       return <SlotTimeItems key={keys} timeSlot={item} />;
                     })}
                   </div>
@@ -228,12 +275,21 @@ const BookingSelectForm = () => {
 };
 
 const BookingContainer = () => {
-  const mockDataItem = [...Array(6)].map((item, i) => {
-    return {
-      id: `s-${i + 1}`,
-      name: `ทีวี${i + 1}`
+  const [stadiumDetail, setStadiumDetail] = useState([]);
+  const { user } = useAuth();
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchStadiumDetail = async () => {
+      try {
+        const res = await stadiumService.getStadium(id);
+        setStadiumDetail(res.data.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
-  });
+    fetchStadiumDetail();
+  }, []);
 
   return (
     <>
@@ -243,7 +299,7 @@ const BookingContainer = () => {
         <div className="mx-auto main text-black">
           <div className="container">
             <div className="row">
-              <BookingHead facilityData={mockDataItem} />
+              <BookingHead stadiumData={stadiumDetail} />
               <BookingSelectForm />
             </div>
           </div>
