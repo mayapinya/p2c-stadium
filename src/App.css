@@ -88,7 +88,7 @@
 }
 
 .content-dec {
-  font-size : 1.86rem;
+  font-size : 1.9rem;
   margin-top: 25px;
 }
 
@@ -110,7 +110,7 @@
 .content-main {
   position: absolute;
   top     : 37%;
-  left    : 11%;
+  right   : 11%;
 }
 
 .content-box {

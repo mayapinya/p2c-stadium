@@ -9,12 +9,9 @@ import s1 from '../../../assets/slider/2.jpg';
 import * as stadiumService from '../../../api/stadiumApi';
 import * as bookingService from '../../../api/bookingApi';
 
-import { useBookingContext } from '../../../contexts/BookingContext';
-
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import BookingItemRow from './BookingItemRow';
 
 const CustomInput = forwardRef((props, ref) => {
   const { onClick, value } = props;
@@ -37,32 +34,12 @@ const CustomInput = forwardRef((props, ref) => {
   );
 });
 
-const SlotTimeItems = ({ timeSlot, setBookingItems, bookingItems }) => {
+const SlotTimeItems = ({ timeSlot }) => {
   const { id, start, end, price, is_booking } = timeSlot;
   const timeStart = new Date(start);
   const timeEnd = new Date(end);
   const startHour = `${timeStart.getUTCHours()}.00`;
   const endHour = `${timeEnd.getUTCHours()}.00`;
-
-  const { setBookingItemArray } = useBookingContext();
-
-  const clickAdd = (item) => {
-    const cloneBookingItems = [...bookingItems];
-    cloneBookingItems.push(item);
-    setBookingItems(cloneBookingItems);
-    // cloneBookingItems[0]['id'] = 'สนาม 2'; // เปลี่ยนทีหลัง ไม่ใช่ hard code
-    // console.log(cloneBookingItems);
-    setBookingItemArray(cloneBookingItems);
-  };
-
-  const clickDelete = (item) => {
-    const findIdx = bookingItems.findIndex((item, index) => index);
-
-    const arr = bookingItems.filter((item, index) => findIdx !== index);
-    setBookingItems(arr);
-    setBookingItemArray(arr);
-  };
-
   return (
     <label htmlFor={id} className="col-12 col-sm-6 col-md-4 col-lg-3  ">
       <div
@@ -77,14 +54,6 @@ const SlotTimeItems = ({ timeSlot, setBookingItems, bookingItems }) => {
             type="checkbox"
             aria-label="time"
             disabled={is_booking}
-            onClick={(e) => {
-              if (e.target.checked === true) {
-                clickAdd(timeSlot);
-              }
-              if (e.target.checked === false) {
-                clickDelete(timeSlot);
-              }
-            }}
           />
 
           <div className="d-flex flex-column align-items-center justify-content-start">
@@ -105,7 +74,6 @@ const SlotTimeItems = ({ timeSlot, setBookingItems, bookingItems }) => {
 };
 
 const BookingTableList = ({}) => {
-  const { bookingItemArray } = useBookingContext();
   return (
     <div className="container">
       <div className="row d-flex justify-content-center">
@@ -126,7 +94,7 @@ const BookingTableList = ({}) => {
                 </tr>
               </thead>
               <tbody className="text-center">
-                {/* <tr>
+                <tr>
                   <th scope="row">1</th>
                   <td>สนาม1</td>
                   <td>19/09/2565</td>
@@ -141,10 +109,7 @@ const BookingTableList = ({}) => {
                   <td>19.00-20.00</td>
                   <td>1</td>
                   <td>900</td>
-                </tr> */}
-                {bookingItemArray.map((item, index) => (
-                  <BookingItemRow key={index} />
-                ))}
+                </tr>
               </tbody>
               <tfoot className="text-center">
                 <tr>
@@ -194,7 +159,7 @@ const BookingHead = ({ stadiumData }) => {
   );
 };
 
-const BookingSelectForm = ({ setBookingItems, bookingItems }) => {
+const BookingSelectForm = () => {
   const today = new Date().toISOString().substr(0, 19).split('T')[0];
   const dateStr = `${today}T00:00:00.000Z`;
   const [startDate, setStartDate] = useState(new Date(Date.parse(dateStr)));
@@ -202,7 +167,6 @@ const BookingSelectForm = ({ setBookingItems, bookingItems }) => {
   const [bookingSlots, setBookingSlots] = useState([]);
   const { user } = useAuth();
   const { id } = useParams();
-  const { createBooking } = useBookingContext();
 
   const [input, setInput] = useState({
     stadiumId: id,
@@ -286,14 +250,7 @@ const BookingSelectForm = ({ setBookingItems, bookingItems }) => {
                   </div>
                   <div className="d-flex align-content-start flex-wrap">
                     {bookingSlots.slots?.map((item, keys) => {
-                      return (
-                        <SlotTimeItems
-                          key={keys}
-                          timeSlot={item}
-                          setBookingItems={setBookingItems}
-                          bookingItems={bookingItems}
-                        />
-                      );
+                      return <SlotTimeItems key={keys} timeSlot={item} />;
                     })}
                   </div>
                 </div>
@@ -322,9 +279,6 @@ const BookingContainer = () => {
   const { user } = useAuth();
   const { id } = useParams();
 
-  const [bookingItems, setBookingItems] = useState([]);
-  // console.log(bookingItems);
-
   useEffect(() => {
     const fetchStadiumDetail = async () => {
       try {
@@ -346,10 +300,7 @@ const BookingContainer = () => {
           <div className="container">
             <div className="row">
               <BookingHead stadiumData={stadiumDetail} />
-              <BookingSelectForm
-                setBookingItems={setBookingItems}
-                bookingItems={bookingItems}
-              />
+              <BookingSelectForm />
             </div>
           </div>
         </div>

@@ -12,16 +12,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import AuthContextProvider from './contexts/AuthContext';
-import BookingContextProvider from './contexts/BookingContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
   <BrowserRouter>
     <AuthContextProvider>
-      <BookingContextProvider>
-        <App />
-      </BookingContextProvider>
+      <App />
     </AuthContextProvider>
   </BrowserRouter>
   // </React.StrictMode>

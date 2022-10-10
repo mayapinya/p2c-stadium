@@ -1,6 +1,5 @@
 import Header from '../../layout/header/Header';
 import Footer from '../../layout/Footer/Footer';
-import { Link } from 'react-router-dom';
 
 const HistoryBookingContainer = () => {
   const mockDataItem = [...Array(3)].map((item, i) => {
@@ -48,20 +47,20 @@ const HistoryBookingContainer = () => {
                               <td>วันที่ 18/09/2565 เวลา 13.00</td>
                               <td>ยังไม่จ่ายเงิน</td>
                               <td>
-                                <Link
-                                  to={`/booking-detail/${id}`}
+                                <a
+                                  href={`/booking-detail/${id}`}
                                   className="btn btn-primary text-white bt-rounded"
                                 >
                                   ข้อมูลการจอง
-                                </Link>
+                                </a>
                               </td>
                               <td>
-                                <Link
-                                  to={`/booking-detail/${id}`}
+                                <a
+                                  href={'/history'}
                                   className="btn btn-danger bt-main text-white"
                                 >
                                   ยกเลิกการจอง
-                                </Link>
+                                </a>
                               </td>
                             </tr>
                           );

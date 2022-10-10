@@ -57,9 +57,9 @@ function Header({ children }) {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/" className="dropdown-item" onClick={onContact}>
+                  <div className="dropdown-item" onClick={onContact}>
                     ติดต่อเรา
-                  </Link>
+                  </div>
                 </li>
               </ul>
             </li>
