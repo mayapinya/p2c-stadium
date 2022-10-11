@@ -30,7 +30,6 @@ function RegisterForm() {
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     const { error } = validateRegister(input);
-    debugger;
     if (error) {
       return toast.error(error.message);
     }
