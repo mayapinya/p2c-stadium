@@ -7,3 +7,5 @@ import axios from '../config/axios';
 export const getBookingList = () => axios.get('/booking/list');
 export const getBooking = (id) => axios.get(`/booking/detail/${id}}`);
 export const getBookingSlot = (input) => axios.post(`/booking/slots/`, input);
+export const saveBooking = (input) => axios.post(`/booking/create/`, input);
+export const cancelBooking = (input) => axios.patch(`/booking/cancel/`, input);

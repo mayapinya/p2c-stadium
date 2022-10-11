@@ -1,6 +1,10 @@
 import React, { useState, forwardRef, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useBooking } from '../../../contexts/BookingContext';
+
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 import Header from '../../../layout/header/Header';
 import Footer from '../../../layout/Footer/Footer';
@@ -35,13 +39,54 @@ const CustomInput = forwardRef((props, ref) => {
 });
 
 const SlotTimeItems = ({ timeSlot }) => {
+  dayjs.extend(utc);
   const { id, start, end, price, is_booking } = timeSlot;
   const timeStart = new Date(start);
   const timeEnd = new Date(end);
   const startHour = `${timeStart.getUTCHours()}.00`;
   const endHour = `${timeEnd.getUTCHours()}.00`;
+
+  const { bookingSlots, setBookingSlots, stadium, setSumBooking } =
+    useBooking();
+
+  const onChangeSlot = (event, timeSlot) => {
+    // console.log('event, timeSlot', event, timeSlot);
+    const { target } = event;
+    if (target.checked) {
+      const newArr = [...bookingSlots];
+      newArr.push({
+        ...timeSlot,
+        stadiumName: stadium.stadiumName,
+        price: stadium.price,
+        hour: dayjs.utc(timeSlot.end).diff(dayjs.utc(timeSlot.start), 'hour')
+      });
+
+      setBookingSlots(newArr);
+
+      const calSum = calSumBooking(newArr);
+      setSumBooking(calSum);
+    } else {
+      const oldArr = [...bookingSlots];
+
+      const newArr = oldArr.filter(
+        (slot) => slot.start !== timeSlot.start && slot.end !== timeSlot.end
+      );
+      setBookingSlots(newArr);
+
+      const calSum = calSumBooking(newArr);
+      setSumBooking(calSum);
+    }
+  };
+
+  const calSumBooking = (arrBooking) => {
+    return {
+      sumHour: arrBooking.map((a) => a.hour).reduce((a, b) => a + b, 0),
+      sumPrice: arrBooking.map((a) => a.price).reduce((a, b) => a + b, 0)
+    };
+  };
+
   return (
-    <label htmlFor={id} className="col-12 col-sm-6 col-md-4 col-lg-3  ">
+    <label htmlFor={id} className="col-12 col-sm-6 col-md-4 col-lg-3">
       <div
         className={`px-3 py-2 border ${
           is_booking ? 'border-dark opacity-25' : 'border-primary'
@@ -54,8 +99,8 @@ const SlotTimeItems = ({ timeSlot }) => {
             type="checkbox"
             aria-label="time"
             disabled={is_booking}
+            onChange={(event) => onChangeSlot(event, timeSlot)}
           />
-
           <div className="d-flex flex-column align-items-center justify-content-start">
             <div className="d-flex flex-row align-items-center">
               {/* <p className="h6 mb-0">{`${start}-${end}`}</p> */}
@@ -74,6 +119,7 @@ const SlotTimeItems = ({ timeSlot }) => {
 };
 
 const BookingTableList = ({}) => {
+  const { bookingSlots, sumBooking } = useBooking();
   return (
     <div className="container">
       <div className="row d-flex justify-content-center">
@@ -94,30 +140,36 @@ const BookingTableList = ({}) => {
                 </tr>
               </thead>
               <tbody className="text-center">
-                <tr>
-                  <th scope="row">1</th>
-                  <td>สนาม1</td>
-                  <td>19/09/2565</td>
-                  <td>18.00-19.00</td>
-                  <td>1</td>
-                  <td>900</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>สนาม1</td>
-                  <td>19/09/2565</td>
-                  <td>19.00-20.00</td>
-                  <td>1</td>
-                  <td>900</td>
-                </tr>
+                {bookingSlots.map((slot, keys) => {
+                  dayjs.extend(utc);
+
+                  const dayBooking = dayjs.utc(slot.start).format('DD/MM/YYYY');
+                  const startTime = dayjs.utc(slot.start).format('HH.mm');
+                  const endTime = dayjs.utc(slot.end).format('HH.mm');
+
+                  const timeDiff = dayjs
+                    .utc(slot.end)
+                    .diff(dayjs.utc(slot.start), 'hour');
+
+                  return (
+                    <tr key={keys}>
+                      <th scope="row">{keys + 1}</th>
+                      <td>{slot.stadiumName}</td>
+                      <td>{dayBooking}</td>
+                      <td>{`${startTime} - ${endTime}`}</td>
+                      <td>{timeDiff}</td>
+                      <td>{slot.price}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
               <tfoot className="text-center">
                 <tr>
                   <td className="fw-bold text-center" colSpan={4}>
                     ราคารวม
                   </td>
-                  <td>2</td>
-                  <td>1,800</td>
+                  <td>{sumBooking.sumHour}</td>
+                  <td>{sumBooking.sumPrice}</td>
                 </tr>
               </tfoot>
             </table>
@@ -156,6 +208,58 @@ const BookingHead = ({ stadiumData }) => {
         })}
       </div>
     </>
+  );
+};
+
+const ButtonBooking = () => {
+  const { bookingSlots, sumBooking, stadium } = useBooking();
+  const { user } = useAuth();
+  let navigate = useNavigate();
+
+  const onSubmit = async () => {
+    try {
+      // console.log(user);
+      // console.log('stadium', stadium);
+      // console.log('sumBooking', sumBooking);
+      // console.log('bookingSlots', bookingSlots);
+      const timeSlots = bookingSlots.map(function (slot) {
+        return {
+          startTime: slot.start,
+          endTime: slot.end
+        };
+      });
+
+      const dataBody = {
+        userId: user.id,
+        stadiumDetailId: stadium.id,
+        priceTotal: sumBooking.sumPrice,
+        timeTotal: sumBooking.sumHour,
+        timeSlots
+      };
+
+      console.log('dataBody', dataBody);
+      const res = await bookingService.saveBooking(dataBody);
+      if (res.status === 200) {
+        navigate(`/booking-history`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <div className="row py-5">
+      <div className="mb-3 col-12 col-sm-12 d-flex justify-content-center align-items-end ">
+        <button
+          disabled={sumBooking.sumHour > 0 ? false : true}
+          onClick={onSubmit}
+          // to={'/booking-history'}
+          className="btn btn-danger bt-main text-white fs-5"
+        >
+          ยืนยันการจอง
+        </button>
+      </div>
+    </div>
   );
 };
 
@@ -260,16 +364,7 @@ const BookingSelectForm = () => {
         </div>
       </section>
       <BookingTableList />
-      <div className="row py-5">
-        <div className="mb-3 col-12 col-sm-12 d-flex justify-content-center align-items-end ">
-          <a
-            href={'/booking-history'}
-            className="btn btn-danger bt-main text-white fs-5"
-          >
-            ยืนยันการจอง
-          </a>
-        </div>
-      </div>
+      <ButtonBooking />
     </>
   );
 };
@@ -277,6 +372,7 @@ const BookingSelectForm = () => {
 const BookingContainer = () => {
   const [stadiumDetail, setStadiumDetail] = useState([]);
   const { user } = useAuth();
+  const { setStadium, clearDataSlotBooking } = useBooking();
   const { id } = useParams();
 
   useEffect(() => {
@@ -284,10 +380,12 @@ const BookingContainer = () => {
       try {
         const res = await stadiumService.getStadium(id);
         setStadiumDetail(res.data.data);
+        setStadium(res.data.data);
       } catch (err) {
         console.log(err);
       }
     };
+    clearDataSlotBooking();
     fetchStadiumDetail();
   }, []);
 

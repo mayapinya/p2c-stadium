@@ -1,14 +1,57 @@
+import { useEffect, useState } from 'react';
+
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
 import Header from '../../layout/header/Header';
 import Footer from '../../layout/Footer/Footer';
 
+import * as bookingService from '../../api/bookingApi';
+import { Link } from 'react-router-dom';
+
 const HistoryBookingContainer = () => {
-  const mockDataItem = [...Array(3)].map((item, i) => {
-    return {
-      id: `s-${i + 1}`,
-      name: `สนาม${i + 1}`,
-      price: 900
+  dayjs.extend(utc);
+
+  const [bookingList, setBookingList] = useState([]);
+
+  const getBookingList = async () => {
+    try {
+      const res = await bookingService.getBookingList();
+      setBookingList(res.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchBookingHistory = async () => {
+      await getBookingList();
     };
-  });
+
+    fetchBookingHistory();
+  }, []);
+
+  const getBookingStatus = (status) => {
+    if (status === 'BOOKING_NOT_PAID') {
+      return 'ยังไม่จ่ายเงิน';
+    } else if (status === 'BOOKING_CANCEL') {
+      return 'ยกเลิก';
+    } else {
+      return 'จ่ายเงินแล้ว';
+    }
+  };
+
+  const onSubmitCancelBooking = async (id) => {
+    try {
+      const dataBody = { id };
+      const res = await bookingService.cancelBooking(dataBody);
+      if (res.status === 200) {
+        await getBookingList();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -37,30 +80,41 @@ const HistoryBookingContainer = () => {
                         </tr>
                       </thead>
                       <tbody className="text-center align-middle">
-                        {mockDataItem.map((item) => {
-                          const { id } = item;
+                        {bookingList.map((item, keys) => {
+                          const {
+                            id,
+                            createdAt,
+                            bookingStatus,
+                            StadiumDetail
+                          } = item;
+                          const { stadiumName } = StadiumDetail;
+
+                          const day = dayjs.utc(createdAt).format('DD/MM/YYYY');
+                          const time = dayjs.utc(createdAt).format('HH.mm');
+                          const bookingDate = `วันที่ ${day} เวลา ${time}`;
+
                           return (
-                            <tr>
+                            <tr key={keys}>
                               <th scope="row">1</th>
-                              <td>P2C-001-2022-205</td>
-                              <td>สนาม1</td>
-                              <td>วันที่ 18/09/2565 เวลา 13.00</td>
-                              <td>ยังไม่จ่ายเงิน</td>
+                              <td>{id}</td>
+                              <td>{stadiumName}</td>
+                              <td>{bookingDate}</td>
+                              <td>{getBookingStatus(bookingStatus)}</td>
                               <td>
-                                <a
-                                  href={`/booking-detail/${id}`}
+                                <Link
+                                  to={`/booking-detail/${id}`}
                                   className="btn btn-primary text-white bt-rounded"
                                 >
                                   ข้อมูลการจอง
-                                </a>
+                                </Link>
                               </td>
                               <td>
-                                <a
-                                  href={'/history'}
+                                <button
+                                  onClick={() => onSubmitCancelBooking(id)}
                                   className="btn btn-danger bt-main text-white"
                                 >
                                   ยกเลิกการจอง
-                                </a>
+                                </button>
                               </td>
                             </tr>
                           );
