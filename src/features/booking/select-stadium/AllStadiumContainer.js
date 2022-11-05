@@ -8,14 +8,6 @@ import CardStadium from './CardStadium';
 import * as stadiumService from '../../../api/stadiumApi';
 
 function AllStadiumContainer() {
-  const mockDataItem = [...Array(5)].map((item, i) => {
-    return {
-      id: `s-${i + 1}`,
-      name: `สนาม${i + 1}`,
-      price: 900
-    };
-  });
-
   const [stadiumList, setStadiumList] = useState([]);
   const { user } = useAuth();
 
@@ -30,8 +22,6 @@ function AllStadiumContainer() {
     };
     fetchStadiumList();
   }, []);
-
-  // console.log('stadiumList', stadiumList);
 
   return (
     <>

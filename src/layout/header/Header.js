@@ -1,6 +1,6 @@
 import AppLogo from '../../assets/logo.png';
 import UserSvg from '../../assets/user.svg';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -15,10 +15,12 @@ function Header({ children }) {
   return (
     <nav className="navbar navbar-expand-lg bg-nav fixed-top">
       <div className="container-fluid">
-        <Link className="navbar-brand" to={'/'}>
-          <img className="app-logo" src={AppLogo} alt="logo" />
-          <span>P2C STADIUM</span>
-        </Link>
+        <NavLink className="navbar-brand" to={'/'}>
+          <div data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+            <img className="app-logo" src={AppLogo} alt="logo" />
+            <span>P2C STADIUM</span>
+          </div>
+        </NavLink>
         <div className="d-flex">
           <button
             className="navbar-toggler"
@@ -35,11 +37,15 @@ function Header({ children }) {
 
         <div className="collapse navbar-collapse " id="navbarNavDropdown">
           <ul className="navbar-nav nav-menu">
-            <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to={'/'}>
+            <NavLink className="nav-link active" aria-current="page" to={'/'}>
+              <li
+                className="nav-item"
+                data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show"
+              >
                 หน้าหลัก
-              </Link>
-            </li>
+              </li>
+            </NavLink>
             <li className="nav-item dropdown nav-menu">
               <a
                 className="nav-link dropdown-toggle"
@@ -51,11 +57,15 @@ function Header({ children }) {
                 เกี่ยวกับเรา
               </a>
               <ul className="dropdown-menu dropdown-menu-lg-end">
-                <li>
-                  <Link className="dropdown-item" to={'/about'}>
+                <NavLink className="dropdown-item" to={'/about'}>
+                  <li
+                    className="nav-item"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show"
+                  >
                     อัตตราค่าบริการ
-                  </Link>
-                </li>
+                  </li>
+                </NavLink>
                 <li>
                   <div className="dropdown-item" onClick={onContact}>
                     ติดต่อเรา
@@ -63,11 +73,16 @@ function Header({ children }) {
                 </li>
               </ul>
             </li>
-            <li className="nav-item nav-menu">
-              <Link className="nav-link" to={'/all-stadium'}>
+            <NavLink className="nav-link" to={'/all-stadium'}>
+              <li
+                className="nav-item nav-menu"
+                data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show"
+              >
                 จองสนาม
-              </Link>
-            </li>
+              </li>
+            </NavLink>
+
             {user ? (
               <li className="nav-item dropdown nav-menu nav-account">
                 <a
@@ -79,11 +94,15 @@ function Header({ children }) {
                   <img className="ms-3" src={UserSvg} alt="Login" />
                 </a>
                 <ul className="dropdown-menu dropdown-menu-lg-end">
-                  <li>
-                    <Link className="dropdown-item" to={'/booking-history'}>
+                  <NavLink className="dropdown-item" to={'/booking-history'}>
+                    <li
+                      className="nav-item"
+                      data-bs-toggle="collapse"
+                      data-bs-target=".navbar-collapse.show"
+                    >
                       ประวัติการจอง
-                    </Link>
-                  </li>
+                    </li>
+                  </NavLink>
                   <li>
                     <button className="dropdown-item" onClick={logout}>
                       ออกจากระบบ
@@ -102,16 +121,24 @@ function Header({ children }) {
                   บัญชี
                 </a>
                 <ul className="dropdown-menu dropdown-menu-lg-end">
-                  <li>
-                    <Link className="dropdown-item" to={'/login'}>
+                  <NavLink className="dropdown-item" to={'/login'}>
+                    <li
+                      className="nav-item"
+                      data-bs-toggle="collapse"
+                      data-bs-target=".navbar-collapse.show"
+                    >
                       เข้าสู่ระบบ
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to={'/register'}>
+                    </li>
+                  </NavLink>
+                  <NavLink className="dropdown-item" to={'/register'}>
+                    <li
+                      className="nav-item"
+                      data-bs-toggle="collapse"
+                      data-bs-target=".navbar-collapse.show"
+                    >
                       สมัครสมาชิก
-                    </Link>
-                  </li>
+                    </li>
+                  </NavLink>
                 </ul>
               </li>
             )}

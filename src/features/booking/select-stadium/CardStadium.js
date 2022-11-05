@@ -6,7 +6,7 @@ function CardStadium({ itemData }) {
   return (
     <div className="col-lg-3 col-md-4 col-sm-5 mb-3">
       <div className="card">
-        <img src={image} className="card-img-top" alt="card" />
+        <img src={image} className="card-img-top card-img" alt="card" />
         <div className="card-body">
           <h5 className="card-title">{stadiumName}</h5>
           <p className="card-text text-end">{price} บาท / ต่อชั่วโมง</p>

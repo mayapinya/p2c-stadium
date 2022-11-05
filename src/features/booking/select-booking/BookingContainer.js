@@ -181,11 +181,11 @@ const BookingTableList = ({}) => {
 };
 
 const BookingHead = ({ stadiumData }) => {
-  const { stadiumName, facility } = stadiumData;
+  const { stadiumName, facility, image } = stadiumData;
   return (
     <>
       <div className="header-img">
-        <img src={s1} className="img-fluid" alt="header-img" />
+        <img src={image} className="img-fluid" alt="header-img" />
       </div>
       <div className="row">
         <div className="mt-5">

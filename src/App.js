@@ -1,8 +1,13 @@
 import './App.css';
 import Router from './route/Router';
 import { ToastContainer } from 'react-toastify';
+import { useAuth } from './contexts/AuthContext';
+import Spinner from './components/Spinner';
 
 function App() {
+  const { initialLoading } = useAuth();
+  if (initialLoading) return <Spinner />;
+
   return (
     <>
       <Router />
