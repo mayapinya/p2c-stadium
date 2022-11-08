@@ -1,21 +1,28 @@
 import './App.css';
-import Router from './route/Router';
-import { ToastContainer } from 'react-toastify';
-import { useAuth } from './contexts/AuthContext';
-import Spinner from './components/Spinner';
+import { useLocation } from 'react-router-dom';
+import AppUserMode from './AppUserMode';
+import AuthContextProvider from './contexts/AuthContext';
+import BookingContextProvider from './contexts/BookingContext';
+import AuthAdminContextProvider from './contexts/AuthAdminContext';
+import AppAdminMode from './AppAdminMode';
 
 function App() {
-  const { initialLoading } = useAuth();
-  if (initialLoading) return <Spinner />;
+  const location = useLocation();
+  const isAdminMode = location.pathname.includes('/admin') ? true : false;
 
-  return (
+  return isAdminMode ? (
     <>
-      <Router />
-      <ToastContainer
-        autoClose="2500"
-        theme="colored"
-        position="bottom-center"
-      />
+      <AuthAdminContextProvider>
+        <AppAdminMode />
+      </AuthAdminContextProvider>
+    </>
+  ) : (
+    <>
+      <AuthContextProvider>
+        <BookingContextProvider>
+          <AppUserMode />
+        </BookingContextProvider>
+      </AuthContextProvider>
     </>
   );
 }

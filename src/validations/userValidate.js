@@ -16,5 +16,17 @@ const registerSchema = Joi.object({
   confirmPassword: Joi.ref('password')
 }).with('password', 'confirmPassword');
 
+const stadiumDetailSchema = Joi.object({
+  stadiumName: Joi.string().required(),
+  price: Joi.number().required(),
+  facility: Joi.string().required(),
+  openTime: Joi.string().required(),
+  closeTime: Joi.string().required(),
+  image: Joi.any().required()
+}).unknown();
+
 export const validateRegister = (input) =>
   registerSchema.validate(input, { abortEarly: false });
+
+export const validateStadium = (input) =>
+  stadiumDetailSchema.validate(input, { abortEarly: false });

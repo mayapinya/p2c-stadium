@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../../contexts/AuthContext';
 
 import Header from '../../../layout/header/Header';
 import Footer from '../../../layout/Footer/Footer';
@@ -9,7 +8,6 @@ import * as stadiumService from '../../../api/stadiumApi';
 
 function AllStadiumContainer() {
   const [stadiumList, setStadiumList] = useState([]);
-  const { user } = useAuth();
 
   useEffect(() => {
     const fetchStadiumList = async () => {

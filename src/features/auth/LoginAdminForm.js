@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAuth } from '../../contexts/AuthContext';
 import UserSvg from '../../assets/user.svg';
 import { useNavigate } from 'react-router-dom';
+import { useAuthAdmin } from '../../contexts/AuthAdminContext';
 
-function LoginForm() {
-  const { login } = useAuth();
+function LoginAdminForm() {
+  const { login } = useAuthAdmin();
   let navigate = useNavigate();
 
   const [input, setInput] = useState({
@@ -81,4 +81,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default LoginAdminForm;

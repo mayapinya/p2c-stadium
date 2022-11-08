@@ -11,18 +11,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import AuthContextProvider from './contexts/AuthContext';
-import BookingContextProvider from './contexts/BookingContext';
+import LoadingContextProvider from './contexts/LoadingContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
   <BrowserRouter>
-    <AuthContextProvider>
-      <BookingContextProvider>
-        <App />
-      </BookingContextProvider>
-    </AuthContextProvider>
+    <LoadingContextProvider>
+      <App />
+    </LoadingContextProvider>
   </BrowserRouter>
   // </React.StrictMode>
 );

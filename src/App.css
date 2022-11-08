@@ -1,5 +1,19 @@
 .color-main {
-  color: #FF0000;
+  background-color: #FF0000;
+  color: white;
+  border: 0;
+}
+
+.color-green {
+  background-color: #65A663;
+  color: white;
+  border: 0;
+}
+
+.color-gray{
+  background-color: #D9D9D9;
+  color: #8E8E8E;
+  border: 0;
 }
 
 .app {
@@ -279,10 +293,91 @@
   border-radius: 30px;
 }
 
-.card-img{
-  aspect-ratio: 4/3;
-  border-bottom-left-radius: unset;
+.card-img {
+  aspect-ratio              : 4/3;
+  border-bottom-left-radius : unset;
   border-bottom-right-radius: unset;
+}
+
+.app-admin {
+  height : calc(100vh - 60px);
+  display: flex;
+}
+
+.app-admin .nav-link{
+  border-radius   : 30px;
+}
+
+.app-admin .nav-link.active {
+  background-color: #D9D9D9;
+  color           : #000000;
+}
+
+.app-admin .nav-item{
+  margin-bottom: 5px;
+}
+
+.app-admin .nav-link {
+  display: flex;
+}
+
+.app-admin .active span{
+  color: #000000;
+}
+
+.nav-link span{
+color: #8E8E8E;
+}
+
+.active .icon-bar{
+  fill: #000000;
+}
+
+.icon-bar{
+  fill: #8E8E8E;
+}
+
+.admin-panel{
+  margin: 35px;
+  padding-bottom: 35px;
+  border-radius: 30px;
+  
+}
+
+.panel-admin{
+  padding-left: 280px;
+  width: 100vw;
+}
+
+.panel-radius{
+  border-radius: 30px;
+  min-height: calc(100vh - 130px);
+}
+
+.btn-border-radius{
+  border-radius: 30px;
+}
+
+.modal-title-box{
+  background-color: #D9D9D9;
+}
+
+.upload-image{
+  aspect-ratio: 4/3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-image img,.upload-image svg{
+  border-radius: 30px;
+}
+
+.logout:hover span, .logout:hover svg{
+  cursor: pointer;
+  color: #000000;
+  fill: #000000;
 }
 
 /* tablet */

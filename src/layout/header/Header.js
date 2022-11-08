@@ -1,6 +1,6 @@
 import AppLogo from '../../assets/logo.png';
 import UserSvg from '../../assets/user.svg';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -47,15 +47,14 @@ function Header({ children }) {
               </li>
             </NavLink>
             <li className="nav-item dropdown nav-menu">
-              <a
+              <div
                 className="nav-link dropdown-toggle"
-                href={''}
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 เกี่ยวกับเรา
-              </a>
+              </div>
               <ul className="dropdown-menu dropdown-menu-lg-end">
                 <NavLink className="dropdown-item" to={'/about'}>
                   <li
@@ -85,14 +84,14 @@ function Header({ children }) {
 
             {user ? (
               <li className="nav-item dropdown nav-menu nav-account">
-                <a
+                <div
                   className="nav-link dropdown-toggle"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
                   <img className="ms-3" src={UserSvg} alt="Login" />
-                </a>
+                </div>
                 <ul className="dropdown-menu dropdown-menu-lg-end">
                   <NavLink className="dropdown-item" to={'/booking-history'}>
                     <li
@@ -112,14 +111,14 @@ function Header({ children }) {
               </li>
             ) : (
               <li className="nav-item dropdown nav-menu nav-account">
-                <a
+                <div
                   className="nav-link dropdown-toggle"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
                   บัญชี
-                </a>
+                </div>
                 <ul className="dropdown-menu dropdown-menu-lg-end">
                   <NavLink className="dropdown-item" to={'/login'}>
                     <li

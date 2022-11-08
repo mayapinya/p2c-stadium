@@ -35,7 +35,7 @@ function RegisterForm() {
     }
     try {
       await register(input);
-      toast.success('success register');
+      toast.success('Success register');
     } catch (err) {
       toast.error(err.response.data.message);
     }

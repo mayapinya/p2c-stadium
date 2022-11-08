@@ -99,7 +99,7 @@ function BookingDetailContainer() {
     };
 
     fetchBookingDetail();
-  }, []);
+  }, [id]);
 
   const {
     bookingStatus,
@@ -112,7 +112,7 @@ function BookingDetailContainer() {
   } = bookingDetail;
 
   const day = dayjs.utc(createdAt).format('DD/MM/YYYY');
-  const time = dayjs.utc(createdAt).format('HH.mm');
+  const time = dayjs(createdAt).format('HH.mm');
   const bookingDate = `วันที่ ${day} เวลา ${time}`;
 
   return (

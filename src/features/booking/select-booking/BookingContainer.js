@@ -1,5 +1,11 @@
-import React, { useState, forwardRef, useEffect, useMemo } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import React, {
+  useState,
+  forwardRef,
+  useEffect,
+  useMemo,
+  useCallback
+} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useBooking } from '../../../contexts/BookingContext';
 
@@ -9,13 +15,13 @@ import utc from 'dayjs/plugin/utc';
 import Header from '../../../layout/header/Header';
 import Footer from '../../../layout/Footer/Footer';
 
-import s1 from '../../../assets/slider/2.jpg';
 import * as stadiumService from '../../../api/stadiumApi';
 import * as bookingService from '../../../api/bookingApi';
 
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import { useLoading } from '../../../contexts/LoadingContext';
 
 const CustomInput = forwardRef((props, ref) => {
   const { onClick, value } = props;
@@ -38,9 +44,9 @@ const CustomInput = forwardRef((props, ref) => {
   );
 });
 
-const SlotTimeItems = ({ timeSlot }) => {
+const SlotTimeItems = ({ timeSlot, onCheckedData }) => {
   dayjs.extend(utc);
-  const { id, start, end, price, is_booking } = timeSlot;
+  let { id, start, end, price, is_booking, checked } = timeSlot;
   const timeStart = new Date(start);
   const timeEnd = new Date(end);
   const startHour = `${timeStart.getUTCHours()}.00`;
@@ -52,6 +58,7 @@ const SlotTimeItems = ({ timeSlot }) => {
   const onChangeSlot = (event, timeSlot) => {
     // console.log('event, timeSlot', event, timeSlot);
     const { target } = event;
+
     if (target.checked) {
       const newArr = [...bookingSlots];
       newArr.push({
@@ -76,6 +83,8 @@ const SlotTimeItems = ({ timeSlot }) => {
       const calSum = calSumBooking(newArr);
       setSumBooking(calSum);
     }
+    timeSlot.checked = target.checked;
+    onCheckedData(timeSlot);
   };
 
   const calSumBooking = (arrBooking) => {
@@ -99,6 +108,7 @@ const SlotTimeItems = ({ timeSlot }) => {
             type="checkbox"
             aria-label="time"
             disabled={is_booking}
+            checked={checked}
             onChange={(event) => onChangeSlot(event, timeSlot)}
           />
           <div className="d-flex flex-column align-items-center justify-content-start">
@@ -118,7 +128,7 @@ const SlotTimeItems = ({ timeSlot }) => {
   );
 };
 
-const BookingTableList = ({}) => {
+const BookingTableList = () => {
   const { bookingSlots, sumBooking } = useBooking();
   return (
     <div className="container">
@@ -264,12 +274,13 @@ const ButtonBooking = () => {
 };
 
 const BookingSelectForm = () => {
+  const { startLoading, stopLoading } = useLoading();
+  const { clearDataSlotBooking } = useBooking();
   const today = new Date().toISOString().substr(0, 19).split('T')[0];
   const dateStr = `${today}T00:00:00.000Z`;
   const [startDate, setStartDate] = useState(new Date(Date.parse(dateStr)));
 
   const [bookingSlots, setBookingSlots] = useState([]);
-  const { user } = useAuth();
   const { id } = useParams();
 
   const [input, setInput] = useState({
@@ -277,7 +288,7 @@ const BookingSelectForm = () => {
     dayBooking: new Date().toISOString()
   });
 
-  const onDateSelectChange = (date) => {
+  const onDateSelectChange = async (date) => {
     const dateSelected = new Date(date)
       .toISOString()
       .substr(0, 19)
@@ -290,14 +301,23 @@ const BookingSelectForm = () => {
       ...input,
       dayBooking: currentDate
     });
-    getBookingSlots();
+    clearDataSlotBooking();
+    await getBookingSlots();
+  };
+
+  const onChecked = (item) => {
+    const newArr = [...bookingSlots];
+    const updateIndex = newArr.findIndex((i) => i.start === item.start);
+    newArr[updateIndex].checked = item.checked;
+    setBookingSlots(newArr);
   };
 
   const getBookingSlots = async () => {
     try {
-      console.log('input', input);
       const res = await bookingService.getBookingSlot(input);
-      setBookingSlots(res.data);
+      const mapData = res.data.slots.map((i) => ({ ...i, checked: false }));
+
+      setBookingSlots(mapData);
     } catch (err) {
       console.log(err);
     }
@@ -313,11 +333,13 @@ const BookingSelectForm = () => {
 
   useEffect(() => {
     const fetchBookingSlots = async () => {
+      startLoading();
       await getBookingSlots();
+      stopLoading();
     };
 
     fetchBookingSlots();
-  }, [inputMemo]);
+  }, [inputMemo, startLoading, stopLoading]);
 
   return (
     <>
@@ -353,8 +375,14 @@ const BookingSelectForm = () => {
                     </form>
                   </div>
                   <div className="d-flex align-content-start flex-wrap">
-                    {bookingSlots.slots?.map((item, keys) => {
-                      return <SlotTimeItems key={keys} timeSlot={item} />;
+                    {bookingSlots?.map((item, keys) => {
+                      return (
+                        <SlotTimeItems
+                          key={keys}
+                          timeSlot={item}
+                          onCheckedData={onChecked}
+                        />
+                      );
                     })}
                   </div>
                 </div>
@@ -370,24 +398,20 @@ const BookingSelectForm = () => {
 };
 
 const BookingContainer = () => {
-  const [stadiumDetail, setStadiumDetail] = useState([]);
-  const { user } = useAuth();
-  const { setStadium, clearDataSlotBooking } = useBooking();
+  const { stadium, setStadium } = useBooking();
   const { id } = useParams();
 
   useEffect(() => {
     const fetchStadiumDetail = async () => {
       try {
         const res = await stadiumService.getStadium(id);
-        setStadiumDetail(res.data.data);
         setStadium(res.data.data);
       } catch (err) {
         console.log(err);
       }
     };
-    clearDataSlotBooking();
     fetchStadiumDetail();
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -397,7 +421,7 @@ const BookingContainer = () => {
         <div className="mx-auto main text-black">
           <div className="container">
             <div className="row">
-              <BookingHead stadiumData={stadiumDetail} />
+              <BookingHead stadiumData={stadium} />
               <BookingSelectForm />
             </div>
           </div>
