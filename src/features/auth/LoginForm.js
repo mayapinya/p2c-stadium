@@ -25,7 +25,6 @@ function LoginForm() {
     } catch (err) {
       toast.error(err.response.data.message);
     } finally {
-      console.log('navigate', navigate);
       navigate(-1);
     }
   };

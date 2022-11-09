@@ -56,7 +56,6 @@ const SlotTimeItems = ({ timeSlot, onCheckedData }) => {
     useBooking();
 
   const onChangeSlot = (event, timeSlot) => {
-    // console.log('event, timeSlot', event, timeSlot);
     const { target } = event;
 
     if (target.checked) {
@@ -228,10 +227,6 @@ const ButtonBooking = () => {
 
   const onSubmit = async () => {
     try {
-      // console.log(user);
-      // console.log('stadium', stadium);
-      // console.log('sumBooking', sumBooking);
-      // console.log('bookingSlots', bookingSlots);
       const timeSlots = bookingSlots.map(function (slot) {
         return {
           startTime: slot.start,
@@ -247,7 +242,6 @@ const ButtonBooking = () => {
         timeSlots
       };
 
-      console.log('dataBody', dataBody);
       const res = await bookingService.saveBooking(dataBody);
       if (res.status === 200) {
         navigate(`/booking-history`);

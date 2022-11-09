@@ -63,7 +63,6 @@ function AdminCreateStadiumContainer() {
       );
       formData.append('image', input.image);
       const res = await createStadium(formData);
-      console.log('res', res);
       stopLoading();
       toast.success('Create stadium success');
       if (res.status === 201) {

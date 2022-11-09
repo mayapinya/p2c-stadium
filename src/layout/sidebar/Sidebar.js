@@ -6,7 +6,6 @@ function Sidebar() {
   const location = useLocation();
   const { logout } = useAuthAdmin();
   const { pathname } = location;
-  console.log('pathname', pathname);
   const classActive = (name, currentName) => {
     return name === currentName ? 'nav-link active' : 'nav-link link-dark';
   };

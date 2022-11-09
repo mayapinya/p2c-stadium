@@ -18,8 +18,6 @@ const RowTableStadium = ({ item }) => {
   );
   const handleChange = (nextChecked) => {
     setChecked(nextChecked);
-    console.log('id', id);
-    console.log('stadiumStatus', nextChecked);
     saveUpdateStatus(id, nextChecked);
   };
 
@@ -76,7 +74,6 @@ const AdminStadiumContainer = () => {
     const fetchStadiumList = async () => {
       try {
         const res = await stadiumService.getStadiumAll();
-        console.log('res.data.data', res.data.data);
         setStadiumList(res.data.data);
       } catch (err) {
         console.log(err);

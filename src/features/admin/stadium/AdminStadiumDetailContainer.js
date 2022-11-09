@@ -66,7 +66,6 @@ function AdminStadiumDetailContainer() {
       );
       formData.append('image', input.image);
       const res = await updateStadium(formData);
-      console.log('res', res);
       stopLoading();
       toast.success('create stadium success');
       if (res.status === 201) {
@@ -81,7 +80,6 @@ function AdminStadiumDetailContainer() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await getStadium(id);
-      console.log('res', res.data);
       const { data } = res.data;
       setInput({
         stadiumName: data.stadiumName,

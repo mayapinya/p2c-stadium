@@ -80,7 +80,6 @@ const AdminBookingContainer = () => {
 
                         const day = dayjs.utc(createdAt).format('DD/MM/YYYY');
                         const time = dayjs(createdAt).format('HH.mm');
-                        console.log('time', time);
                         const bookingDate = `วันที่ ${day} เวลา ${time}`;
 
                         return (

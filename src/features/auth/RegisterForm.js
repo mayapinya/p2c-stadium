@@ -21,7 +21,6 @@ function RegisterForm() {
     let value = e.target.value;
     if (e.target.name === 'phoneNumber') {
       value = value.slice(0, 10);
-      console.log('value', value);
     }
 
     setInput({ ...input, [e.target.name]: value });
