@@ -11,8 +11,8 @@ function CardContent({ top = '27%', right = '0', left = '0' }) {
       <div className="content-box col-lg-6 col-md-9 col-sm-12 float-end">
         <img src={logoAA} className="logo-text" alt="text-logo" />
         <h2 className="text-white content-dec text-start">
-          สนามบอลหญ้าเทียมขนาด 7 คน มีห้องคลับเฮาน์ติดแอร์ไว้สำหรับผู้ติดตาม
-          มีเครื่องดื่มและอาหาร พร้อมบริการ
+          สนามบอลหญ้าเทียมขนาด 7 คน&nbsp;&nbsp;&nbsp;&nbsp; มีห้องคลับเฮาน์
+          ติดแอร์ไว้สำหรับ ผู้ติดตาม มีเครื่องดื่มและอาหาร พร้อมบริการ
         </h2>
         <div className="button-box col-lg-12 col-md-12 col-sm-12 float-start">
           <button
