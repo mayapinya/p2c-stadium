@@ -21,11 +21,10 @@ function Header({ children }) {
     }, 300);
   };
 
-  const onHome = () => {
+  const onScrollToTop = () => {
     setTimeout(() => {
-      const divElement = document.getElementById('home-menu');
-      divElement.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, 500);
   };
 
   return (
@@ -35,7 +34,7 @@ function Header({ children }) {
           <div
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
-            onClick={onHome}
+            onClick={onScrollToTop}
           >
             <img className="app-logo" src={AppLogo} alt="logo" />
             <span>P2C STADIUM</span>
@@ -62,7 +61,7 @@ function Header({ children }) {
                 className="nav-item"
                 data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show"
-                onClick={onHome}
+                onClick={onScrollToTop}
               >
                 หน้าหลัก
               </li>
@@ -102,6 +101,7 @@ function Header({ children }) {
             </li>
             <NavLink className="nav-link" to={'/all-stadium'}>
               <li
+                onClick={onScrollToTop}
                 className="nav-item nav-menu"
                 data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show"
@@ -126,6 +126,7 @@ function Header({ children }) {
                       className="nav-item"
                       data-bs-toggle="collapse"
                       data-bs-target=".navbar-collapse.show"
+                      onClick={onScrollToTop}
                     >
                       ประวัติการจอง
                     </li>
@@ -150,6 +151,7 @@ function Header({ children }) {
                 <ul className="dropdown-menu dropdown-menu-lg-end">
                   <NavLink className="dropdown-item" to={'/login'}>
                     <li
+                      onClick={onScrollToTop}
                       className="nav-item"
                       data-bs-toggle="collapse"
                       data-bs-target=".navbar-collapse.show"
@@ -159,6 +161,7 @@ function Header({ children }) {
                   </NavLink>
                   <NavLink className="dropdown-item" to={'/register'}>
                     <li
+                      onClick={onScrollToTop}
                       className="nav-item"
                       data-bs-toggle="collapse"
                       data-bs-target=".navbar-collapse.show"

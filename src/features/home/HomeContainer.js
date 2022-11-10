@@ -10,7 +10,7 @@ function HomeContainer() {
   return (
     <>
       <Header />
-      <div className="bg-black home-content-bg" id="home-menu">
+      <div className="bg-black home-content-bg">
         <div className="container mx-auto h-100 main d-flex flex-column justify-content-center box-about">
           <CardContent />
         </div>
