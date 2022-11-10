@@ -4,14 +4,13 @@ import PhoneSVG from '../../assets/phone.svg';
 import LineSVG from '../../assets/line.svg';
 import FacebookSVG from '../../assets/facebook.svg';
 
-import SliderCard from './SliderCard';
 import CardContent from './CardContent';
 
 function HomeContainer() {
   return (
     <>
       <Header />
-      <div className="bg-black home-content-bg">
+      <div className="bg-black home-content-bg" id="home-menu">
         <div className="container mx-auto h-100 main d-flex flex-column justify-content-center box-about">
           <CardContent />
         </div>

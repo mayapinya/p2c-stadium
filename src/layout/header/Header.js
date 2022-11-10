@@ -1,6 +1,6 @@
 import AppLogo from '../../assets/logo.png';
 import UserSvg from '../../assets/user.svg';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -8,19 +8,30 @@ function Header({ children }) {
   const { user, logout } = useAuth();
 
   const onContact = () => {
-    const divElement = document.getElementById('footer');
-    divElement.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      const divElement = document.getElementById('footer');
+      divElement.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
   };
 
   const onAbout = () => {
-    const divElement = document.getElementById('content-about');
-    divElement.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      const divElement = document.getElementById('content-about');
+      divElement.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+  };
+
+  const onHome = () => {
+    setTimeout(() => {
+      const divElement = document.getElementById('home-menu');
+      divElement.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
   };
 
   return (
     <nav className="navbar navbar-expand-lg bg-nav fixed-top">
       <div className="container-fluid">
-        <NavLink className="navbar-brand" to={'/'}>
+        <NavLink className="navbar-brand" to={'/'} onClick={onHome}>
           <div data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
             <img className="app-logo" src={AppLogo} alt="logo" />
             <span>P2C STADIUM</span>
@@ -42,7 +53,12 @@ function Header({ children }) {
 
         <div className="collapse navbar-collapse " id="navbarNavDropdown">
           <ul className="navbar-nav nav-menu">
-            <NavLink className="nav-link active" aria-current="page" to={'/'}>
+            <NavLink
+              className="nav-link active"
+              aria-current="page"
+              to={'/'}
+              onClick={onHome}
+            >
               <li
                 className="nav-item"
                 data-bs-toggle="collapse"
@@ -62,22 +78,25 @@ function Header({ children }) {
               </div>
               <ul className="dropdown-menu dropdown-menu-lg-end">
                 <li>
-                  <div
+                  <Link
+                    to={'/'}
                     className="dropdown-item"
                     onClick={onAbout}
                     style={{ cursor: 'pointer' }}
                   >
                     อัตตราค่าบริการ
-                  </div>
+                  </Link>
                 </li>
+
                 <li>
-                  <div
+                  <Link
+                    to={'/'}
                     className="dropdown-item"
                     onClick={onContact}
                     style={{ cursor: 'pointer' }}
                   >
                     ติดต่อเรา
-                  </div>
+                  </Link>
                 </li>
               </ul>
             </li>
