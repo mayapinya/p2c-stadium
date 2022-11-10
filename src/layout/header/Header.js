@@ -21,17 +21,10 @@ function Header({ children }) {
     }, 300);
   };
 
-  const onHome = () => {
-    setTimeout(() => {
-      const divElement = document.getElementById('home-menu');
-      divElement.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
-  };
-
   return (
     <nav className="navbar navbar-expand-lg bg-nav fixed-top">
       <div className="container-fluid">
-        <NavLink className="navbar-brand" to={'/'} onClick={onHome}>
+        <NavLink className="navbar-brand" to={'/'}>
           <div data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
             <img className="app-logo" src={AppLogo} alt="logo" />
             <span>P2C STADIUM</span>
@@ -53,12 +46,7 @@ function Header({ children }) {
 
         <div className="collapse navbar-collapse " id="navbarNavDropdown">
           <ul className="navbar-nav nav-menu">
-            <NavLink
-              className="nav-link active"
-              aria-current="page"
-              to={'/'}
-              onClick={onHome}
-            >
+            <NavLink className="nav-link active" aria-current="page" to={'/'}>
               <li
                 className="nav-item"
                 data-bs-toggle="collapse"
