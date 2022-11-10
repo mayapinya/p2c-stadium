@@ -27,7 +27,6 @@ function RouterAdmin() {
               path="stadium-detail/:id"
               element={<AdminStadiumDetailPage />}
             />
-
             <Route path="user" element={<AdminBookingPage />} />
             <Route path="*" element={<Navigate to="/admin" />} />
           </Route>

@@ -12,6 +12,11 @@ function Header({ children }) {
     divElement.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const onAbout = () => {
+    const divElement = document.getElementById('content-about');
+    divElement.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-nav fixed-top">
       <div className="container-fluid">
@@ -56,15 +61,15 @@ function Header({ children }) {
                 เกี่ยวกับเรา
               </div>
               <ul className="dropdown-menu dropdown-menu-lg-end">
-                <NavLink className="dropdown-item" to={'/about'}>
-                  <li
-                    className="nav-item"
-                    data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse.show"
+                <li>
+                  <div
+                    className="dropdown-item"
+                    onClick={onAbout}
+                    style={{ cursor: 'pointer' }}
                   >
                     อัตตราค่าบริการ
-                  </li>
-                </NavLink>
+                  </div>
+                </li>
                 <li>
                   <div
                     className="dropdown-item"
