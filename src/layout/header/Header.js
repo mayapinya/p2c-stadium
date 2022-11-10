@@ -21,11 +21,22 @@ function Header({ children }) {
     }, 300);
   };
 
+  const onHome = () => {
+    setTimeout(() => {
+      const divElement = document.getElementById('home-menu');
+      divElement.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-nav fixed-top">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to={'/'}>
-          <div data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+          <div
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            onClick={onHome}
+          >
             <img className="app-logo" src={AppLogo} alt="logo" />
             <span>P2C STADIUM</span>
           </div>
@@ -51,6 +62,7 @@ function Header({ children }) {
                 className="nav-item"
                 data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show"
+                onClick={onHome}
               >
                 หน้าหลัก
               </li>
