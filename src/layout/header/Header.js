@@ -66,7 +66,11 @@ function Header({ children }) {
                   </li>
                 </NavLink>
                 <li>
-                  <div className="dropdown-item" onClick={onContact}>
+                  <div
+                    className="dropdown-item"
+                    onClick={onContact}
+                    style={{ cursor: 'pointer' }}
+                  >
                     ติดต่อเรา
                   </div>
                 </li>
