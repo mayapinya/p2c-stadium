@@ -31,7 +31,7 @@ function AdminCreateStadiumContainer() {
   });
 
   const handleChangeInput = (e) => {
-    let value = e.target.value;
+    let value = e.target.value ?? e.target.checked;
     if (e.target.name === 'price') {
       value = value.replace(/[^0-9\.,]/g, ''); // eslint-disable-line
     }
@@ -198,7 +198,10 @@ function AdminCreateStadiumContainer() {
                     </label>
                     <Switch
                       name="stadiumStatus"
-                      onChange={handleChangeInput}
+                      onChange={(checked) => {
+                        setChecked(checked);
+                        setInput({ ...input, stadiumStatus: checked });
+                      }}
                       checked={checked}
                       uncheckedIcon={false}
                       checkedIcon={false}

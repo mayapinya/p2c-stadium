@@ -79,6 +79,7 @@ function AdminStadiumDetailContainer() {
 
   useEffect(() => {
     const fetchData = async () => {
+      startLoading();
       const res = await getStadium(id);
       const { data } = res.data;
       setInput({
@@ -90,10 +91,51 @@ function AdminStadiumDetailContainer() {
         stadiumStatus: data.stadiumStatus === STADIUM_OPEN ? true : false,
         image: data.image
       });
-      setFile(data.image);
+      // setFile(data.image);
+      stopLoading();
     };
     fetchData();
   }, [id, startLoading, stopLoading]);
+
+  const renderImage = () => {
+    if (file) {
+      return (
+        <img
+          src={URL.createObjectURL(file)}
+          className="img-fluid shadow"
+          alt="upload"
+        />
+      );
+    }
+
+    if (input?.image) {
+      return (
+        <img src={input.image} className="img-fluid shadow" alt="upload" />
+      );
+    }
+
+    return (
+      <svg
+        className="bd-placeholder-img img-thumbnail img-fluid shadow"
+        width="394"
+        height="293"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200"
+        preserveAspectRatio="xMidYMid slice"
+        focusable="false"
+      >
+        <title>
+          A generic square placeholder image with a white border around it,
+          making it resemble a photograph taken with an old instant camera
+        </title>
+        <rect width="100%" height="100%" fill="#868e96"></rect>
+        <text x="43%" y="50%" fill="#dee2e6" dy=".3em">
+          รูปสนาม
+        </text>
+      </svg>
+    );
+  };
 
   return (
     <>
@@ -235,46 +277,7 @@ function AdminStadiumDetailContainer() {
                 <div className="col-sm-12 col-lg-12 col-xl-5 mt-5">
                   <div className="row">
                     <div className="upload-image">
-                      {file || input.image ? (
-                        input.image ? (
-                          <img
-                            src={input.image}
-                            className="img-fluid shadow"
-                            alt="upload"
-                          />
-                        ) : (
-                          <img
-                            src={URL.createObjectURL(file)}
-                            className="img-fluid shadow"
-                            alt="upload"
-                          />
-                        )
-                      ) : (
-                        <svg
-                          className="bd-placeholder-img img-thumbnail img-fluid shadow"
-                          width="394"
-                          height="293"
-                          xmlns="http://www.w3.org/2000/svg"
-                          role="img"
-                          aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200"
-                          preserveAspectRatio="xMidYMid slice"
-                          focusable="false"
-                        >
-                          <title>
-                            A generic square placeholder image with a white
-                            border around it, making it resemble a photograph
-                            taken with an old instant camera
-                          </title>
-                          <rect
-                            width="100%"
-                            height="100%"
-                            fill="#868e96"
-                          ></rect>
-                          <text x="43%" y="50%" fill="#dee2e6" dy=".3em">
-                            รูปสนาม
-                          </text>
-                        </svg>
-                      )}
+                      {renderImage()}
                       <input
                         name="image"
                         type="file"
